@@ -2020,7 +2020,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "use_spawn_team": true,
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "task_ids": ["CRUISE-002", "CRUISE-003"]
+      "task_ids": ["CRUISE-003"]
     },
     {
       "id": "SPAWN-003",
