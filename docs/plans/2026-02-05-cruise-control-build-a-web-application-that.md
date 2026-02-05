@@ -2531,7 +2531,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-015",
       "subject": "Final integration verification",
       "description": "Run cargo build, cargo test, cargo clippy, cargo fmt --check, and the full Playwright E2E test suite. Fix any issues found. Verify the complete application works end-to-end.",
-      "blocked_by": ["CRUISE-007d", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
+      "blocked_by": ["CRUISE-007d", "CRUISE-009", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
       "complexity": "medium",
       "acceptance_criteria": [
         "cargo build succeeds with no errors",
