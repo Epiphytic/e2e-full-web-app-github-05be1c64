@@ -2215,9 +2215,9 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "spawn_instance": "SPAWN-001"
     },
     {
-      "id": "CRUISE-002",
-      "subject": "JWT key pair generation and token operations",
-      "description": "Implement RSA key pair generation (2048-bit), auto-creation of certs/ directory with PEM files, JWT token creation with RS256, and JWT token validation. Include unit tests for key generation, token creation, token validation, and expired token rejection.",
+      "id": "CRUISE-003",
+      "subject": "JWT infrastructure, JWKS endpoint, and auth middleware",
+      "description": "Implement RSA key pair generation (2048-bit), auto-creation of certs/ directory with PEM files, JWT token creation with RS256, and JWT token validation. Implement the .well-known/jwks.json endpoint that exposes the RSA public key in JWK format. Implement auth middleware that extracts Bearer tokens from Authorization headers and validates them. Include unit tests for all components.",
       "blocked_by": ["CRUISE-001"],
       "complexity": "high",
       "acceptance_criteria": [
@@ -2226,19 +2226,6 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
         "ensure_keys() reads existing PEM files if they already exist",
         "create_token() produces a valid RS256 JWT with sub, iat, exp claims",
         "validate_token() accepts valid tokens and rejects expired ones",
-        "All unit tests pass"
-      ],
-      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
-      "spawn_instance": "SPAWN-002"
-    },
-    {
-      "id": "CRUISE-003",
-      "subject": "JWKS endpoint and auth middleware",
-      "description": "Implement the .well-known/jwks.json endpoint that exposes the RSA public key in JWK format. Implement auth middleware that extracts Bearer tokens from Authorization headers and validates them. Include unit tests.",
-      "blocked_by": ["CRUISE-002"],
-      "complexity": "medium",
-      "acceptance_criteria": [
         "public_key_to_jwks() converts PEM to JWKS format with kty, use, alg, n, e, kid fields",
         "extract_bearer_token() extracts token from Authorization: Bearer header",
         "validate_request() returns Claims on valid token or Unauthorized on invalid",
