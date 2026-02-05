@@ -1936,13 +1936,19 @@ git commit -m "ci: add dependency review workflow for PR checks"
 
 **Step 1: Create E2E test workflow that uploads results as artifacts**
 
-> **Note — "Push test results" interpretation:** The original requirement to "push test results to the repository for validation on the PR" is fulfilled here via GitHub Actions artifacts rather than git commits. Artifacts are uploaded to GitHub and accessible directly from the PR's "Checks" tab, satisfying the validation-on-PR intent. We deliberately chose artifacts over committing results to a branch because:
+> **Design Decision — "Push test results" interpretation:** The original requirement states "push test results to the repository for validation on the PR." This is ambiguous — it could mean either (a) literally committing test results to a git branch, or (b) making test results available for review on the PR. **This plan implements option (b): uploading results as GitHub Actions artifacts**, which are accessible directly from the PR's "Checks" tab. This is the recommended approach because:
 > - Committing generated test output (HTML reports, JSON results) pollutes git history with non-source files
 > - Each CI run would create merge conflicts with other PRs' result commits
 > - Artifact retention (30 days) provides sufficient review window without permanent storage cost
 > - The PR Checks tab is the standard place reviewers look for CI results
 >
-> If the project later requires persistent test result history (e.g., for trend analysis), a dedicated results branch or external reporting service (e.g., Allure, GitHub Pages) can be added as a follow-up.
+> **If literal git commits are required instead**, the workflow would need these changes:
+> 1. Change `permissions.contents` from `read` to `write`
+> 2. After the test run step, add steps to: `git checkout -b test-results/${{ github.event.pull_request.number }}`, commit the report files, and `git push origin` that branch
+> 3. Add a step to post a PR comment linking to the results branch
+> 4. Consider adding a cleanup workflow to delete stale results branches
+>
+> The artifacts approach is strongly recommended as the industry-standard pattern, but the git-commit alternative is documented here for clarity. If the requirement owner confirms that literal git commits are needed, switch to the alternative described above.
 
 `.github/workflows/e2e-tests.yml`:
 
@@ -2511,7 +2517,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     {
       "id": "CRUISE-014",
       "subject": "GitHub Actions E2E test workflow",
-      "description": "Create .github/workflows/e2e-tests.yml that builds the Rust backend, installs Playwright, runs E2E tests, and uploads test results as GitHub Actions artifacts (not committed to the repo). This fulfills the 'push test results for PR validation' requirement — artifacts are accessible from the PR Checks tab, providing reviewers with test results without committing generated files to git history. Runs on PRs to main.",
+      "description": "Create .github/workflows/e2e-tests.yml that builds the Rust backend, installs Playwright, runs E2E tests, and uploads test results as GitHub Actions artifacts (not committed to the repo). This fulfills the 'push test results for PR validation' requirement — artifacts are accessible from the PR Checks tab, providing reviewers with test results without committing generated files to git history. If the requirement owner confirms literal git commits are needed, switch to the git-commit alternative documented in Task 14's design decision note. Runs on PRs to main.",
       "blocked_by": [],
       "complexity": "low",
       "acceptance_criteria": [
