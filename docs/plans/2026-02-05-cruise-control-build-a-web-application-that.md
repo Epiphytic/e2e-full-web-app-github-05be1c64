@@ -6,7 +6,7 @@
 
 **Architecture:** Actix-web serves both the API and HTML templates. Authentication uses a local JWT CA (RSA key pair) with a `.well-known/jwks.json` endpoint. The frontend is server-rendered HTML enhanced with htmx for dynamic interactions. SQLite is the data store, accessed via `rusqlite`. Playwright handles E2E testing with JWT-based auth setup.
 
-**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.x, Playwright (TypeScript), GitHub Actions (super-linter, dependency-review-action)
+**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.0.8, Playwright (TypeScript), GitHub Actions (super-linter, dependency-review-action)
 
 ---
 
