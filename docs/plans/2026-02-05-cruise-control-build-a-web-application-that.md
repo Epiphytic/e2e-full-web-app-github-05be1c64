@@ -1946,7 +1946,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "use_spawn_team": true,
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "task_ids": ["CRUISE-004"]
+      "task_ids": ["CRUISE-004a", "CRUISE-004b"]
     },
     {
       "id": "SPAWN-004",
@@ -2041,13 +2041,28 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "spawn_instance": "SPAWN-002"
     },
     {
-      "id": "CRUISE-004",
-      "subject": "SQLite database layer",
-      "description": "Implement SQLite connection pool (r2d2), table operations (list, create, drop), and schema operations (add column, remove column). Enable WAL mode. Include unit tests for all operations using in-memory SQLite.",
+      "id": "CRUISE-004a",
+      "subject": "Core SQLite database setup",
+      "description": "Implement SQLite connection pool using r2d2 with WAL mode enabled. Define the database module structure and connection helpers. Include unit tests verifying pool creation and WAL mode activation using in-memory SQLite.",
       "blocked_by": ["CRUISE-001"],
-      "complexity": "high",
+      "complexity": "medium",
       "acceptance_criteria": [
         "create_pool() creates an r2d2 connection pool with WAL mode enabled",
+        "Pool correctly manages connections and handles concurrent access",
+        "WAL mode is verified via PRAGMA journal_mode query",
+        "All unit tests pass"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-003"
+    },
+    {
+      "id": "CRUISE-004b",
+      "subject": "Table and schema CRUD operations",
+      "description": "Implement table operations (list, create, drop) and schema operations (add column, remove column) on top of the database pool. Include input validation for table and column names. Include unit tests for all operations using in-memory SQLite.",
+      "blocked_by": ["CRUISE-004a"],
+      "complexity": "medium",
+      "acceptance_criteria": [
         "list_tables() returns all non-system tables",
         "create_table() creates a table with specified columns and validates table name",
         "drop_table() drops a table and validates table name",
@@ -2082,7 +2097,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-006",
       "subject": "API route handlers",
       "description": "Implement all actix-web route handlers: login page (GET /), login POST, logout, JWKS endpoint, dashboard (GET /dashboard), table detail (GET /tables/:name), create table (POST /api/tables), drop table (DELETE /api/tables/:name), add column (POST /api/tables/:name/columns), remove column (DELETE /api/tables/:name/columns/:col).",
-      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-004", "CRUISE-005"],
+      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-004b", "CRUISE-005"],
       "complexity": "high",
       "acceptance_criteria": [
         "GET / renders login page",
