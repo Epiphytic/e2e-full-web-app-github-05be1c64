@@ -520,13 +520,90 @@ git commit -m "feat: add JWT auth middleware with bearer token extraction"
 
 ---
 
-### Task 4: SQLite Database Layer
+### Task 4a: Core DB Setup
 
 **Files:**
 - Create: `src/db/mod.rs`
 - Create: `src/db/connection.rs`
+
+**Step 1: Write failing test for pool creation**
+
+In `src/db/connection.rs`:
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_create_pool() {
+        let pool = create_pool(":memory:");
+        let conn = pool.get().unwrap();
+        let mode: String = conn
+            .query_row("PRAGMA journal_mode", [], |row| row.get(0))
+            .unwrap();
+        assert_eq!(mode, "wal");
+    }
+}
+```
+
+**Step 2: Run test to verify it fails**
+
+Run: `cargo test test_create_pool`
+Expected: FAIL
+
+**Step 3: Implement core database setup**
+
+`src/db/connection.rs`:
+
+```rust
+use r2d2::Pool;
+use r2d2_sqlite::SqliteConnectionManager;
+
+pub type DbPool = Pool<SqliteConnectionManager>;
+
+pub fn create_pool(database_url: &str) -> DbPool {
+    let manager = SqliteConnectionManager::file(database_url);
+    let pool = Pool::builder()
+        .max_size(10)
+        .build(manager)
+        .expect("Failed to create pool");
+
+    // Enable WAL mode for better concurrency
+    let conn = pool.get().expect("Failed to get connection");
+    conn.execute_batch("PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;")
+        .expect("Failed to set pragmas");
+
+    pool
+}
+```
+
+`src/db/mod.rs`:
+
+```rust
+pub mod connection;
+```
+
+**Step 4: Run all tests**
+
+Run: `cargo test`
+Expected: All PASS
+
+**Step 5: Commit**
+
+```bash
+git add src/db/
+git commit -m "feat: add core SQLite database setup with connection pool and WAL mode"
+```
+
+---
+
+### Task 4b: Table/Schema CRUD Operations
+
+**Files:**
 - Create: `src/db/tables.rs`
 - Create: `src/db/schema.rs`
+- Modify: `src/db/mod.rs`
 
 **Step 1: Write failing test for table creation**
 
@@ -553,31 +630,7 @@ mod tests {
 Run: `cargo test test_create_table`
 Expected: FAIL
 
-**Step 3: Implement database layer**
-
-`src/db/connection.rs`:
-
-```rust
-use r2d2::Pool;
-use r2d2_sqlite::SqliteConnectionManager;
-
-pub type DbPool = Pool<SqliteConnectionManager>;
-
-pub fn create_pool(database_url: &str) -> DbPool {
-    let manager = SqliteConnectionManager::file(database_url);
-    let pool = Pool::builder()
-        .max_size(10)
-        .build(manager)
-        .expect("Failed to create pool");
-
-    // Enable WAL mode for better concurrency
-    let conn = pool.get().expect("Failed to get connection");
-    conn.execute_batch("PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;")
-        .expect("Failed to set pragmas");
-
-    pool
-}
-```
+**Step 3: Implement table and schema operations**
 
 `src/db/tables.rs`:
 
@@ -710,7 +763,7 @@ mod tests {
 }
 ```
 
-`src/db/mod.rs`:
+Update `src/db/mod.rs` to add the new modules:
 
 ```rust
 pub mod connection;
@@ -727,7 +780,7 @@ Expected: All PASS
 
 ```bash
 git add src/db/
-git commit -m "feat: add SQLite database layer with table/schema operations"
+git commit -m "feat: add table and schema CRUD operations"
 ```
 
 ---
