@@ -526,6 +526,8 @@ git commit -m "feat: add JWT auth middleware with bearer token extraction"
 
 ### Task 4a: Core DB Setup
 
+> **Note:** Tasks 4a and 4b were split from a single "SQLite database layer" task for better granularity — 4a handles connection pool setup while 4b handles CRUD operations on top of it.
+
 **Files:**
 - Create: `src/db/mod.rs`
 - Create: `src/db/connection.rs`
