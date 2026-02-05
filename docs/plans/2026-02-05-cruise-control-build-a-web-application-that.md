@@ -1805,7 +1805,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run Super-Linter
-        uses: github/super-linter@v8
+        uses: github/super-linter@v8.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
@@ -2362,12 +2362,12 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     {
       "id": "CRUISE-012",
       "subject": "GitHub Actions lint workflow",
-      "description": "Create .github/workflows/lint.yml using github/super-linter@v8 that runs on PRs to main. Configure for Rust (clippy), TypeScript (eslint), HTML, CSS, YAML, and GitHub Actions validation. Exclude node_modules and target directories.",
+      "description": "Create .github/workflows/lint.yml using github/super-linter@v8.4.0 that runs on PRs to main. Configure for Rust (clippy), TypeScript (eslint), HTML, CSS, YAML, and GitHub Actions validation. Exclude node_modules and target directories.",
       "blocked_by": [],
       "complexity": "low",
       "acceptance_criteria": [
         "Workflow triggers on pull_request to main",
-        "Uses github/super-linter@v8",
+        "Uses github/super-linter@v8.4.0",
         "Validates Rust (clippy), TypeScript, HTML, CSS, YAML",
         "Excludes node_modules, target, and dist directories"
       ],
