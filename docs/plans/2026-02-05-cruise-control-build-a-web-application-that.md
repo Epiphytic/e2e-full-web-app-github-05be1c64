@@ -6,7 +6,7 @@
 
 **Architecture:** Actix-web serves both the API and HTML templates. Authentication uses a local JWT CA (RSA key pair) with a `.well-known/jwks.json` endpoint. The frontend is server-rendered HTML enhanced with htmx for dynamic interactions. SQLite is the data store, accessed via `rusqlite`. Playwright handles E2E testing with JWT-based auth setup.
 
-**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.0.8, Playwright 1.58.1+ (TypeScript), GitHub Actions (super-linter, dependency-review-action)
+**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.0.9+, Playwright 1.58.1+ (TypeScript), GitHub Actions (super-linter, dependency-review-action)
 
 ---
 
@@ -804,7 +804,7 @@ git commit -m "feat: add table and schema CRUD operations"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SQLite Editor{% endblock %}</title>
-    <script src="https://unpkg.com/htmx.org@2.0.8"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.9"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: system-ui, sans-serif; max-width: 1200px; margin: 0 auto; padding: 1rem; }
