@@ -1383,31 +1383,84 @@ git commit -m "feat: add schema modification route handlers (add/remove column)"
 
 ---
 
-### Task 7: Complete Template Rendering Integration
+### Task 7a: Auth & Public Template Rendering Integration
 
 **Files:**
-- Modify: `src/routes/auth.rs` (replace `todo!()` with template rendering)
-- Modify: `src/routes/tables.rs` (replace `todo!()` with template rendering)
+- Modify: `src/routes/auth.rs` (replace `todo!()` with template rendering for login, logout, JWKS)
 
-**Step 1: Add Askama template structs**
+**Step 1: Add Askama template structs for auth routes**
 
-Wire up Askama template structs to each route handler, replacing all `todo!()` calls with actual template rendering using `askama` 0.15+ (note: `askama_actix` is deprecated; use `askama` directly or with `askama_web`).
+Wire up Askama template structs for the login page (GET /), login POST response, logout redirect, and JWKS endpoint, replacing all `todo!()` calls with actual template rendering using `askama` 0.15+ (note: `askama_actix` is deprecated; use `askama` directly or with `askama_web`).
 
-**Step 2: Add cookie-based auth extraction**
+**Step 2: Add cookie-based auth extraction helper**
 
-Add a helper function to extract and validate the JWT from the `auth_token` cookie on protected routes (dashboard, table detail). Redirect to login page if the cookie is missing or invalid.
+Add a helper function to extract and validate the JWT from the `auth_token` cookie on protected routes. Redirect to login page if the cookie is missing or invalid. This helper will be reused by table management and schema modification routes.
 
-**Step 3: Test manually**
+**Step 3: Commit**
+
+```bash
+git add src/routes/auth.rs
+git commit -m "feat: integrate askama templates with auth route handlers"
+```
+
+---
+
+### Task 7b: Table Management Template Rendering Integration
+
+**Files:**
+- Modify: `src/routes/tables.rs` (replace `todo!()` with template rendering for dashboard, table detail, create, drop)
+
+**Step 1: Add Askama template structs for table management routes**
+
+Wire up Askama template structs for the dashboard (GET /dashboard), table detail (GET /tables/:name), create table (POST /api/tables), and drop table (DELETE /api/tables/:name), replacing all `todo!()` calls with actual template rendering. Use the cookie-based auth extraction helper from Task 7a for protected routes.
+
+**Step 2: Commit**
+
+```bash
+git add src/routes/tables.rs
+git commit -m "feat: integrate askama templates with table management route handlers"
+```
+
+---
+
+### Task 7c: Schema Modification Template Rendering Integration
+
+**Files:**
+- Modify: `src/routes/schema.rs` (replace `todo!()` with template rendering for add/remove column)
+
+**Step 1: Add Askama template structs for schema modification routes**
+
+Wire up Askama template structs for add column (POST /api/tables/:name/columns) and remove column (DELETE /api/tables/:name/columns/:col), replacing all `todo!()` calls with actual template rendering. Use the cookie-based auth extraction helper from Task 7a for protected routes.
+
+**Step 2: Commit**
+
+```bash
+git add src/routes/schema.rs
+git commit -m "feat: integrate askama templates with schema modification route handlers"
+```
+
+---
+
+### Task 7d: Main.rs Route Wiring and Verification
+
+**Files:**
+- Modify: `src/main.rs` (wire all routes, configure app_data)
+
+**Step 1: Wire all routes in main.rs**
+
+Configure all route handlers with correct HTTP methods, set up `app_data` for DbPool and public key PEM.
+
+**Step 2: Test manually**
 
 Run: `cargo run`
 - Navigate to `http://localhost:8080/` - should see login page
 - Navigate to `http://localhost:8080/.well-known/jwks.json` - should see JWKS JSON
 
-**Step 4: Commit**
+**Step 3: Commit**
 
 ```bash
-git add src/routes/
-git commit -m "feat: integrate askama templates with route handlers"
+git add src/main.rs
+git commit -m "feat: wire all routes in main.rs and verify app starts"
 ```
 
 ---
@@ -2089,11 +2142,35 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     },
     {
       "id": "SPAWN-007d",
-      "name": "Route Wiring and Template Integration",
+      "name": "Auth & Public Template Integration",
       "use_spawn_team": false,
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "task_ids": ["CRUISE-007"]
+      "task_ids": ["CRUISE-007a"]
+    },
+    {
+      "id": "SPAWN-007e",
+      "name": "Table Management Template Integration",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-007b"]
+    },
+    {
+      "id": "SPAWN-007f",
+      "name": "Schema Modification Template Integration",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-007c"]
+    },
+    {
+      "id": "SPAWN-007g",
+      "name": "Main.rs Route Wiring and Verification",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-007d"]
     },
     {
       "id": "SPAWN-008",
@@ -2286,27 +2363,71 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "spawn_instance": "SPAWN-007c"
     },
     {
-      "id": "CRUISE-007",
-      "subject": "Main.rs wiring and template rendering integration",
-      "description": "Wire all routes in main.rs, configure app_data for DbPool and public key, integrate Askama template rendering with route handlers (replace all todo!() calls), and verify the app compiles and starts.",
-      "blocked_by": ["CRUISE-006a", "CRUISE-006b", "CRUISE-006c"],
+      "id": "CRUISE-007a",
+      "subject": "Auth & public template rendering integration",
+      "description": "Wire up Askama template structs for auth and public route handlers in auth.rs (login page, login POST, logout, JWKS), replacing all todo!() calls with actual template rendering. Add a cookie-based auth extraction helper for reuse by other routes.",
+      "blocked_by": ["CRUISE-006a"],
       "complexity": "medium",
       "acceptance_criteria": [
-        "main.rs configures all routes with correct HTTP methods",
-        "DbPool and public key PEM are shared via app_data",
-        "All todo!() calls are replaced with actual template rendering",
-        "cargo build succeeds",
-        "App starts and serves pages at localhost:8080"
+        "All todo!() calls in auth route handlers are replaced with Askama template rendering",
+        "Cookie-based JWT auth extraction helper function is implemented",
+        "cargo build succeeds"
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "spawn_instance": "SPAWN-007d"
     },
     {
+      "id": "CRUISE-007b",
+      "subject": "Table management template rendering integration",
+      "description": "Wire up Askama template structs for table management route handlers in tables.rs (dashboard, table detail, create table, drop table), replacing all todo!() calls with actual template rendering. Use the cookie-based auth extraction helper from CRUISE-007a.",
+      "blocked_by": ["CRUISE-006b", "CRUISE-007a"],
+      "complexity": "medium",
+      "acceptance_criteria": [
+        "All todo!() calls in table management route handlers are replaced with Askama template rendering",
+        "Protected routes use cookie-based auth extraction",
+        "cargo build succeeds"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-007e"
+    },
+    {
+      "id": "CRUISE-007c",
+      "subject": "Schema modification template rendering integration",
+      "description": "Wire up Askama template structs for schema modification route handlers in schema.rs (add column, remove column), replacing all todo!() calls with actual template rendering. Use the cookie-based auth extraction helper from CRUISE-007a.",
+      "blocked_by": ["CRUISE-006c", "CRUISE-007a"],
+      "complexity": "low",
+      "acceptance_criteria": [
+        "All todo!() calls in schema modification route handlers are replaced with Askama template rendering",
+        "Protected routes use cookie-based auth extraction",
+        "cargo build succeeds"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-007f"
+    },
+    {
+      "id": "CRUISE-007d",
+      "subject": "Main.rs route wiring and verification",
+      "description": "Wire all routes in main.rs with correct HTTP methods, configure app_data for DbPool and public key PEM, and verify the app compiles and starts serving pages at localhost:8080.",
+      "blocked_by": ["CRUISE-007a", "CRUISE-007b", "CRUISE-007c"],
+      "complexity": "low",
+      "acceptance_criteria": [
+        "main.rs configures all routes with correct HTTP methods",
+        "DbPool and public key PEM are shared via app_data",
+        "cargo build succeeds",
+        "App starts and serves pages at localhost:8080"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-007g"
+    },
+    {
       "id": "CRUISE-008",
       "subject": "Playwright test infrastructure setup",
       "description": "Create tests/e2e/ directory with package.json, tsconfig.json, playwright.config.ts (with webServer pointing to cargo run), and JWT helper utility for creating test tokens. Install dependencies and Chromium.",
-      "blocked_by": ["CRUISE-007"],
+      "blocked_by": ["CRUISE-007d"],
       "complexity": "medium",
       "acceptance_criteria": [
         "tests/e2e/package.json exists with @playwright/test ^1.58.1 and jsonwebtoken dependencies",
@@ -2423,7 +2544,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-015",
       "subject": "Final integration verification",
       "description": "Run cargo build, cargo test, cargo clippy, cargo fmt --check, and the full Playwright E2E test suite. Fix any issues found. Verify the complete application works end-to-end.",
-      "blocked_by": ["CRUISE-007", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
+      "blocked_by": ["CRUISE-007d", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
       "complexity": "medium",
       "acceptance_criteria": [
         "cargo build succeeds with no errors",
