@@ -2300,7 +2300,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "blocked_by": ["CRUISE-007"],
       "complexity": "medium",
       "acceptance_criteria": [
-        "tests/e2e/package.json exists with @playwright/test and jsonwebtoken dependencies",
+        "tests/e2e/package.json exists with @playwright/test ^1.58.1 and jsonwebtoken dependencies",
         "tests/e2e/playwright.config.ts configures webServer, projects (setup + chromium), and reporters",
         "tests/e2e/helpers/jwt.ts creates short-lived JWT tokens using the local private key",
         "npm install and playwright install chromium succeed"
