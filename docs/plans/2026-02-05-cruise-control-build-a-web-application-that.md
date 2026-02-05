@@ -1857,7 +1857,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Dependency Review
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v4.32.0
         with:
           fail-on-severity: moderate
           deny-licenses: GPL-3.0, AGPL-3.0
@@ -2335,12 +2335,12 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     {
       "id": "CRUISE-013",
       "subject": "GitHub Actions dependency review workflow",
-      "description": "Create .github/workflows/dependency-review.yml using actions/dependency-review-action@v4 that runs on PRs to main. Configure to fail on moderate+ severity and deny GPL-3.0/AGPL-3.0 licenses.",
+      "description": "Create .github/workflows/dependency-review.yml using actions/dependency-review-action@v4.32.0 that runs on PRs to main. Configure to fail on moderate+ severity and deny GPL-3.0/AGPL-3.0 licenses.",
       "blocked_by": [],
       "complexity": "low",
       "acceptance_criteria": [
         "Workflow triggers on pull_request to main",
-        "Uses actions/dependency-review-action@v4",
+        "Uses actions/dependency-review-action@v4.32.0",
         "Fails on moderate or higher severity vulnerabilities",
         "Denies GPL-3.0 and AGPL-3.0 licenses"
       ],
