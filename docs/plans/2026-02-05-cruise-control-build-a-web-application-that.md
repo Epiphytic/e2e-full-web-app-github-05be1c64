@@ -2536,8 +2536,8 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     {
       "id": "CRUISE-015",
       "subject": "Final integration verification",
-      "description": "Run cargo build, cargo test, cargo clippy, cargo fmt --check, and the full Playwright E2E test suite. Fix any issues found. Verify the complete application works end-to-end.",
-      "blocked_by": ["CRUISE-007d", "CRUISE-009", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
+      "description": "Run cargo build, cargo test, cargo clippy, cargo fmt --check, and the full Playwright E2E test suite. Verify all GitHub Actions workflows (lint, dependency review, E2E tests) are correctly configured. Fix any issues found. Verify the complete application works end-to-end.",
+      "blocked_by": ["CRUISE-007d", "CRUISE-008", "CRUISE-009", "CRUISE-010", "CRUISE-011", "CRUISE-012", "CRUISE-013", "CRUISE-014"],
       "complexity": "medium",
       "acceptance_criteria": [
         "cargo build succeeds with no errors",
@@ -2545,8 +2545,9 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
         "cargo clippy -- -D warnings passes with no warnings",
         "cargo fmt --check passes with no formatting issues",
         "npx playwright test passes all E2E tests",
-        "GitHub Actions lint workflow (CRUISE-012) is in place",
-        "GitHub Actions dependency review workflow (CRUISE-013) is in place",
+        "GitHub Actions lint workflow (CRUISE-012) is in place and correctly configured",
+        "GitHub Actions dependency review workflow (CRUISE-013) is in place and correctly configured",
+        "GitHub Actions E2E test workflow (CRUISE-014) is in place and correctly configured",
         "Application serves login page, authenticates, and allows table/schema management"
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
