@@ -1961,7 +1961,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "use_spawn_team": true,
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "task_ids": ["CRUISE-006", "CRUISE-007"]
+      "task_ids": ["CRUISE-006a", "CRUISE-006b", "CRUISE-006c", "CRUISE-007"]
     },
     {
       "id": "SPAWN-006",
@@ -2107,22 +2107,47 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "spawn_instance": "SPAWN-004"
     },
     {
-      "id": "CRUISE-006",
-      "subject": "API route handlers",
-      "description": "Implement all actix-web route handlers: login page (GET /), login POST, logout, JWKS endpoint, dashboard (GET /dashboard), table detail (GET /tables/:name), create table (POST /api/tables), drop table (DELETE /api/tables/:name), add column (POST /api/tables/:name/columns), remove column (DELETE /api/tables/:name/columns/:col).",
-      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-004b", "CRUISE-005a", "CRUISE-005b"],
-      "complexity": "high",
+      "id": "CRUISE-006a",
+      "subject": "Auth & public route handlers",
+      "description": "Implement actix-web route handlers for authentication and public endpoints: login page (GET /), login POST (POST /api/auth/login with JWT validation and HttpOnly cookie), logout (GET /logout clears cookie and redirects), and JWKS endpoint (GET /.well-known/jwks.json).",
+      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-005a"],
+      "complexity": "medium",
       "acceptance_criteria": [
         "GET / renders login page",
         "POST /api/auth/login validates JWT and sets HttpOnly cookie",
         "GET /logout clears auth cookie and redirects to /",
         "GET /.well-known/jwks.json returns JWKS",
-        "GET /dashboard renders table list (requires valid auth cookie)",
-        "POST /api/tables creates a table and returns htmx fragment",
-        "DELETE /api/tables/:name drops a table",
-        "POST /api/tables/:name/columns adds a column and returns htmx fragment",
-        "DELETE /api/tables/:name/columns/:col removes a column",
         "All protected routes redirect to login when unauthenticated"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-005"
+    },
+    {
+      "id": "CRUISE-006b",
+      "subject": "Table management route handlers",
+      "description": "Implement actix-web route handlers for table management: dashboard (GET /dashboard renders table list, requires valid auth cookie), table detail (GET /tables/:name), create table (POST /api/tables returns htmx fragment), and drop table (DELETE /api/tables/:name).",
+      "blocked_by": ["CRUISE-004b", "CRUISE-005b", "CRUISE-006a"],
+      "complexity": "medium",
+      "acceptance_criteria": [
+        "GET /dashboard renders table list (requires valid auth cookie)",
+        "GET /tables/:name renders table detail page",
+        "POST /api/tables creates a table and returns htmx fragment",
+        "DELETE /api/tables/:name drops a table"
+      ],
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "spawn_instance": "SPAWN-005"
+    },
+    {
+      "id": "CRUISE-006c",
+      "subject": "Schema modification route handlers",
+      "description": "Implement actix-web route handlers for schema modifications: add column (POST /api/tables/:name/columns returns htmx fragment) and remove column (DELETE /api/tables/:name/columns/:col).",
+      "blocked_by": ["CRUISE-004b", "CRUISE-005b", "CRUISE-006a"],
+      "complexity": "low",
+      "acceptance_criteria": [
+        "POST /api/tables/:name/columns adds a column and returns htmx fragment",
+        "DELETE /api/tables/:name/columns/:col removes a column"
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
@@ -2132,7 +2157,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-007",
       "subject": "Main.rs wiring and template rendering integration",
       "description": "Wire all routes in main.rs, configure app_data for DbPool and public key, integrate Askama template rendering with route handlers (replace all todo!() calls), and verify the app compiles and starts.",
-      "blocked_by": ["CRUISE-006"],
+      "blocked_by": ["CRUISE-006a", "CRUISE-006b", "CRUISE-006c"],
       "complexity": "medium",
       "acceptance_criteria": [
         "main.rs configures all routes with correct HTTP methods",
