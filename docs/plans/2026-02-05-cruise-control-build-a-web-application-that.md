@@ -183,6 +183,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# Latest stable versions as of 2026-02
 actix-web = "4.12.1"
 actix-rt = "2"
 actix-cors = "0.7"
@@ -192,8 +193,8 @@ r2d2_sqlite = "0.32.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 jsonwebtoken = "10.3.0"
-askama = "0.15.4"  # Note: askama_actix is deprecated; use askama 0.15+ directly with askama_web
-askama_web = "0.2"  # Provides actix-web responder integration (replaces deprecated askama_actix)
+askama = "0.15.4"  # askama_actix is deprecated; askama 0.15+ works directly with askama_web
+askama_web = "0.2"  # Actix-web responder integration (replaces deprecated askama_actix)
 base64 = "0.22"
 rsa = { version = "0.9.10", features = ["pem"] }
 rand = "0.8"
