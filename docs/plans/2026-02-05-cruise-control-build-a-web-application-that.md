@@ -1061,17 +1061,23 @@ git commit -m "feat: add dashboard and table detail templates with htmx"
 
 ---
 
-### Task 6: API Routes
+### Task 6a: Auth & Public Route Handlers
 
 **Files:**
 - Create: `src/routes/mod.rs`
 - Create: `src/routes/auth.rs`
-- Create: `src/routes/tables.rs`
-- Create: `src/routes/schema.rs`
 - Create: `src/routes/well_known.rs`
-- Modify: `src/main.rs`
 
-**Step 1: Implement .well-known route**
+**Step 1: Create routes module**
+
+`src/routes/mod.rs`:
+
+```rust
+pub mod auth;
+pub mod well_known;
+```
+
+**Step 2: Implement .well-known route**
 
 `src/routes/well_known.rs`:
 
@@ -1087,7 +1093,7 @@ pub async fn jwks_endpoint(public_key: web::Data<String>) -> HttpResponse {
 }
 ```
 
-**Step 2: Implement auth routes**
+**Step 3: Implement auth routes**
 
 `src/routes/auth.rs`:
 
@@ -1143,7 +1149,27 @@ pub async fn logout() -> HttpResponse {
 }
 ```
 
-**Step 3: Implement table routes**
+**Step 4: Build and verify**
+
+Run: `cargo build`
+Expected: Compiles (some `todo!()` warnings ok for now)
+
+**Step 5: Commit**
+
+```bash
+git add src/routes/mod.rs src/routes/auth.rs src/routes/well_known.rs
+git commit -m "feat: add auth and public route handlers (login, logout, JWKS)"
+```
+
+---
+
+### Task 6b: Table Management Route Handlers
+
+**Files:**
+- Create: `src/routes/tables.rs`
+- Modify: `src/routes/mod.rs` (add `pub mod tables;`)
+
+**Step 1: Implement table routes**
 
 `src/routes/tables.rs`:
 
@@ -1165,6 +1191,22 @@ pub async fn list_tables(pool: web::Data<DbPool>) -> HttpResponse {
     match tables::list_tables(&conn) {
         Ok(table_list) => {
             // Render dashboard template with table list
+            todo!()
+        }
+        Err(e) => HttpResponse::InternalServerError().body(format!("Error: {}", e)),
+    }
+}
+
+pub async fn table_detail(
+    pool: web::Data<DbPool>,
+    path: web::Path<String>,
+) -> HttpResponse {
+    let table_name = path.into_inner();
+    let conn = pool.get().expect("Failed to get db connection");
+    // Get table schema info and render detail template
+    match tables::list_tables(&conn) {
+        Ok(_) => {
+            // Render table detail template
             todo!()
         }
         Err(e) => HttpResponse::InternalServerError().body(format!("Error: {}", e)),
@@ -1217,7 +1259,31 @@ pub async fn delete_table(
 }
 ```
 
-**Step 4: Implement schema routes**
+**Step 2: Update routes module**
+
+Add `pub mod tables;` to `src/routes/mod.rs`.
+
+**Step 3: Build and verify**
+
+Run: `cargo build`
+Expected: Compiles
+
+**Step 4: Commit**
+
+```bash
+git add src/routes/tables.rs src/routes/mod.rs
+git commit -m "feat: add table management route handlers (list, detail, create, drop)"
+```
+
+---
+
+### Task 6c: Schema Modification Route Handlers
+
+**Files:**
+- Create: `src/routes/schema.rs`
+- Modify: `src/routes/mod.rs` (add `pub mod schema;`)
+
+**Step 1: Implement schema routes**
 
 `src/routes/schema.rs`:
 
@@ -1295,74 +1361,20 @@ pub async fn remove_column(
 }
 ```
 
-**Step 5: Wire everything together in main.rs**
+**Step 2: Update routes module**
 
-`src/main.rs`:
+Add `pub mod schema;` to `src/routes/mod.rs`.
 
-```rust
-mod auth;
-mod config;
-mod db;
-mod routes;
-
-use actix_web::{web, App, HttpServer, middleware};
-use db::connection::create_pool;
-use auth::jwt::ensure_keys;
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    env_logger::init();
-
-    let (private_pem, public_pem) = ensure_keys("certs")
-        .expect("Failed to initialize JWT keys");
-
-    let pool = create_pool("data.db");
-
-    HttpServer::new(move || {
-        App::new()
-            .wrap(middleware::Logger::default())
-            .app_data(web::Data::new(pool.clone()))
-            .app_data(web::Data::new(public_pem.clone()))
-            // Public routes
-            .route("/", web::get().to(routes::auth::login_page))
-            .route("/health", web::get().to(|| async { "ok" }))
-            .route("/.well-known/jwks.json", web::get().to(routes::well_known::jwks_endpoint))
-            // Auth routes
-            .route("/api/auth/login", web::post().to(routes::auth::login))
-            .route("/logout", web::get().to(routes::auth::logout))
-            // Protected routes (table management)
-            .route("/dashboard", web::get().to(routes::tables::list_tables))
-            .route("/tables/{table_name}", web::get().to(routes::tables::table_detail))
-            .route("/api/tables", web::post().to(routes::tables::create_table))
-            .route("/api/tables/{table_name}", web::delete().to(routes::tables::delete_table))
-            .route("/api/tables/{table_name}/columns", web::post().to(routes::schema::add_column))
-            .route("/api/tables/{table_name}/columns/{column_name}", web::delete().to(routes::schema::remove_column))
-    })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
-}
-```
-
-`src/routes/mod.rs`:
-
-```rust
-pub mod auth;
-pub mod tables;
-pub mod schema;
-pub mod well_known;
-```
-
-**Step 6: Build and verify**
+**Step 3: Build and verify**
 
 Run: `cargo build`
-Expected: Compiles (some `todo!()` warnings ok for now)
+Expected: Compiles
 
-**Step 7: Commit**
+**Step 4: Commit**
 
 ```bash
-git add src/routes/ src/main.rs
-git commit -m "feat: add API routes for auth, tables, schema, and JWKS endpoint"
+git add src/routes/schema.rs src/routes/mod.rs
+git commit -m "feat: add schema modification route handlers (add/remove column)"
 ```
 
 ---
