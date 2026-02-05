@@ -2486,7 +2486,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-012",
       "subject": "GitHub Actions lint workflow",
       "description": "Create .github/workflows/lint.yml using github/super-linter@v8 that runs on PRs to main. Configure for Rust (clippy), TypeScript (eslint), HTML, CSS, YAML, and GitHub Actions validation. Exclude node_modules and target directories.",
-      "blocked_by": [],
+      "blocked_by": ["CRUISE-001"],
       "complexity": "low",
       "acceptance_criteria": [
         "Workflow triggers on pull_request to main",
@@ -2502,7 +2502,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-013",
       "subject": "GitHub Actions dependency review workflow",
       "description": "Create .github/workflows/dependency-review.yml using actions/dependency-review-action@v4.32.0 that runs on PRs to main. Configure to fail on moderate+ severity and deny GPL-3.0/AGPL-3.0 licenses.",
-      "blocked_by": [],
+      "blocked_by": ["CRUISE-001"],
       "complexity": "low",
       "acceptance_criteria": [
         "Workflow triggers on pull_request to main",
@@ -2518,7 +2518,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-014",
       "subject": "GitHub Actions E2E test workflow",
       "description": "Create .github/workflows/e2e-tests.yml that builds the Rust backend, installs Playwright, runs E2E tests, and uploads test results as GitHub Actions artifacts (not committed to the repo). This fulfills the 'push test results for PR validation' requirement — artifacts are accessible from the PR Checks tab, providing reviewers with test results without committing generated files to git history. If the requirement owner confirms literal git commits are needed, switch to the git-commit alternative documented in Task 14's design decision note. Runs on PRs to main.",
-      "blocked_by": [],
+      "blocked_by": ["CRUISE-001"],
       "complexity": "low",
       "acceptance_criteria": [
         "Workflow triggers on pull_request to main",
