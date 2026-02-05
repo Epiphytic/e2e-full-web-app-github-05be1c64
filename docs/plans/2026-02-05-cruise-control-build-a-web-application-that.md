@@ -1351,7 +1351,7 @@ git commit -m "feat: integrate askama templates with route handlers"
     "test:report": "npx playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.0",
+    "@playwright/test": "^1.58.1",
     "jsonwebtoken": "^9.0.0",
     "@types/jsonwebtoken": "^9.0.0"
   }
