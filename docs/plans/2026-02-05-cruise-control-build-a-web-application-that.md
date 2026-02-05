@@ -2190,7 +2190,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-006a",
       "subject": "Auth & public route handlers",
       "description": "Implement actix-web route handlers for authentication and public endpoints: login page (GET /), login POST (POST /api/auth/login with JWT validation and HttpOnly cookie), logout (GET /logout clears cookie and redirects), and JWKS endpoint (GET /.well-known/jwks.json).",
-      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-005a"],
+      "blocked_by": ["CRUISE-003", "CRUISE-005a"],
       "complexity": "medium",
       "acceptance_criteria": [
         "GET / renders login page",
