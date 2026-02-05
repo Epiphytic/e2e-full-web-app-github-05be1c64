@@ -785,15 +785,11 @@ git commit -m "feat: add table and schema CRUD operations"
 
 ---
 
-### Task 5: HTML Templates (Askama)
+### Task 5a: Base & Auth Templates (Askama)
 
 **Files:**
 - Create: `src/templates/base.html`
 - Create: `src/templates/login.html`
-- Create: `src/templates/dashboard.html`
-- Create: `src/templates/table_detail.html`
-- Create: `src/templates/partials/table_row.html`
-- Create: `src/templates/partials/column_form.html`
 - Create: `src/templates/partials/alert.html`
 
 **Step 1: Create base template**
@@ -860,7 +856,32 @@ git commit -m "feat: add table and schema CRUD operations"
 {% endblock %}
 ```
 
-**Step 3: Create dashboard template**
+**Step 3: Create alert partial template**
+
+`src/templates/partials/alert.html`:
+
+```html
+<div class="alert alert-{{ alert_type }}">{{ message }}</div>
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/templates/base.html src/templates/login.html src/templates/partials/alert.html
+git commit -m "feat: add base layout, login, and alert templates with htmx"
+```
+
+---
+
+### Task 5b: Dashboard & Table Detail Templates (Askama)
+
+**Files:**
+- Create: `src/templates/dashboard.html`
+- Create: `src/templates/table_detail.html`
+- Create: `src/templates/partials/table_row.html`
+- Create: `src/templates/partials/column_form.html`
+
+**Step 1: Create dashboard template**
 
 `src/templates/dashboard.html`:
 
@@ -923,7 +944,7 @@ git commit -m "feat: add table and schema CRUD operations"
 {% endblock %}
 ```
 
-**Step 4: Create table detail template**
+**Step 2: Create table detail template**
 
 `src/templates/table_detail.html`:
 
@@ -992,7 +1013,7 @@ git commit -m "feat: add table and schema CRUD operations"
 {% endblock %}
 ```
 
-**Step 5: Create partial templates**
+**Step 3: Create partial templates**
 
 `src/templates/partials/table_row.html`:
 
@@ -1031,17 +1052,11 @@ git commit -m "feat: add table and schema CRUD operations"
 </tr>
 ```
 
-`src/templates/partials/alert.html`:
-
-```html
-<div class="alert alert-{{ alert_type }}">{{ message }}</div>
-```
-
-**Step 6: Commit**
+**Step 4: Commit**
 
 ```bash
-git add src/templates/
-git commit -m "feat: add askama HTML templates with htmx for dynamic UI"
+git add src/templates/dashboard.html src/templates/table_detail.html src/templates/partials/table_row.html src/templates/partials/column_form.html
+git commit -m "feat: add dashboard and table detail templates with htmx"
 ```
 
 ---
@@ -2002,7 +2017,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     },
     {
       "id": "SPAWN-004",
-      "name": "Frontend Templates",
+      "name": "Base & Auth Templates, Dashboard & Table Detail Templates",
       "use_spawn_team": false,
       "cli_params": "claude --model haiku --allowedTools Read,Write,Edit --timeout 180",
       "permissions": ["Read", "Write", "Edit"],
