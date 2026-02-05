@@ -190,7 +190,8 @@ r2d2_sqlite = "0.32.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 jsonwebtoken = "10.3.0"
-askama = "0.15.4"  # Note: askama_actix is deprecated; askama 0.15+ works directly or via askama_web
+askama = "0.15.4"  # Note: askama_actix is deprecated; use askama 0.15+ directly with askama_web
+askama_web = "0.2"  # Provides actix-web responder integration (replaces deprecated askama_actix)
 base64 = "0.22"
 rsa = { version = "0.9.10", features = ["pem"] }
 rand = "0.8"
@@ -2087,7 +2088,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "complexity": "low",
       "acceptance_criteria": [
         ".gitignore exists and covers all specified categories (keys, certs, .env, OS files, editor files, build artifacts, node_modules, .fork-join, logs)",
-        "Cargo.toml exists with all required dependencies (actix-web, rusqlite, jsonwebtoken, askama, rsa, etc.)",
+        "Cargo.toml exists with all required dependencies (actix-web, rusqlite, jsonwebtoken, askama, askama_web, rsa, etc.)",
         "src/main.rs exists with a /health endpoint",
         "cargo build succeeds"
       ],
