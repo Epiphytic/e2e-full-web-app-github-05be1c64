@@ -2055,12 +2055,36 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "task_ids": ["CRUISE-005b"]
     },
     {
-      "id": "SPAWN-007",
-      "name": "API Routes and Integration",
-      "use_spawn_team": true,
+      "id": "SPAWN-007a",
+      "name": "Auth & Public Route Handlers",
+      "use_spawn_team": false,
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
-      "task_ids": ["CRUISE-006a", "CRUISE-006b", "CRUISE-006c", "CRUISE-007"]
+      "task_ids": ["CRUISE-006a"]
+    },
+    {
+      "id": "SPAWN-007b",
+      "name": "Table Management Route Handlers",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-006b"]
+    },
+    {
+      "id": "SPAWN-007c",
+      "name": "Schema Modification Route Handlers",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-006c"]
+    },
+    {
+      "id": "SPAWN-007d",
+      "name": "Route Wiring and Template Integration",
+      "use_spawn_team": false,
+      "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
+      "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
+      "task_ids": ["CRUISE-007"]
     },
     {
       "id": "SPAWN-008",
@@ -2220,7 +2244,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
-      "spawn_instance": "SPAWN-007"
+      "spawn_instance": "SPAWN-007a"
     },
     {
       "id": "CRUISE-006b",
@@ -2236,7 +2260,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
-      "spawn_instance": "SPAWN-007"
+      "spawn_instance": "SPAWN-007b"
     },
     {
       "id": "CRUISE-006c",
@@ -2250,7 +2274,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
-      "spawn_instance": "SPAWN-007"
+      "spawn_instance": "SPAWN-007c"
     },
     {
       "id": "CRUISE-007",
@@ -2267,7 +2291,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       ],
       "permissions": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"],
       "cli_params": "claude --model sonnet --allowedTools Read,Write,Edit,Bash,Glob,Grep --timeout 300",
-      "spawn_instance": "SPAWN-007"
+      "spawn_instance": "SPAWN-007d"
     },
     {
       "id": "CRUISE-008",
