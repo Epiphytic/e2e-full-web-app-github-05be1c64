@@ -181,19 +181,18 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-actix-web = "4"
+actix-web = "4.12.1"
 actix-rt = "2"
 actix-cors = "0.7"
-rusqlite = { version = "0.31", features = ["bundled"] }
+rusqlite = { version = "0.38.0", features = ["bundled"] }
 r2d2 = "0.8"
-r2d2_sqlite = "0.24"
+r2d2_sqlite = "0.32.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-jsonwebtoken = "9"
-askama = "0.12"
-askama_actix = "0.14"
+jsonwebtoken = "10.3.0"
+askama = "0.15.4"  # Note: askama_actix is deprecated; askama 0.15+ works directly or via askama_web
 base64 = "0.22"
-rsa = { version = "0.9", features = ["pem"] }
+rsa = { version = "0.9.10", features = ["pem"] }
 rand = "0.8"
 chrono = { version = "0.4", features = ["serde"] }
 log = "0.4"
@@ -1308,7 +1307,7 @@ git commit -m "feat: add API routes for auth, tables, schema, and JWKS endpoint"
 
 **Step 1: Add Askama template structs**
 
-Wire up Askama template structs to each route handler, replacing all `todo!()` calls with actual template rendering using `askama_actix`.
+Wire up Askama template structs to each route handler, replacing all `todo!()` calls with actual template rendering using `askama` 0.15+ (note: `askama_actix` is deprecated; use `askama` directly or with `askama_web`).
 
 **Step 2: Add cookie-based auth extraction**
 
