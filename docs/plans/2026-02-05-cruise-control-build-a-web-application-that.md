@@ -6,7 +6,7 @@
 
 **Architecture:** Actix-web serves both the API and HTML templates. Authentication uses a local JWT CA (RSA key pair) with a `.well-known/jwks.json` endpoint. The frontend is server-rendered HTML enhanced with htmx for dynamic interactions. SQLite is the data store, accessed via `rusqlite`. Playwright handles E2E testing with JWT-based auth setup.
 
-**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.0.8+, Playwright 1.58.1+ (TypeScript), GitHub Actions (super-linter, dependency-review-action)
+**Tech Stack:** Rust (actix-web, rusqlite, jsonwebtoken, askama), htmx 2.0.8+, Playwright ~1.58.1 (latest stable, TypeScript), GitHub Actions (super-linter, dependency-review-action)
 
 ---
 
@@ -1488,7 +1488,7 @@ git commit -m "feat: wire all routes in main.rs and verify app starts"
     "test:report": "npx playwright show-report"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.1",
+    "@playwright/test": "~1.58.1",
     "jsonwebtoken": "^9.0.0",
     "@types/jsonwebtoken": "^9.0.0"
   }
@@ -2430,7 +2430,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "blocked_by": ["CRUISE-007d"],
       "complexity": "medium",
       "acceptance_criteria": [
-        "tests/e2e/package.json exists with @playwright/test ^1.58.1 and jsonwebtoken dependencies",
+        "tests/e2e/package.json exists with @playwright/test ~1.58.1 (latest stable) and jsonwebtoken dependencies",
         "tests/e2e/playwright.config.ts configures webServer, projects (setup + chromium), and reporters",
         "tests/e2e/helpers/jwt.ts creates short-lived JWT tokens using the local private key",
         "npm install and playwright install chromium succeed"
