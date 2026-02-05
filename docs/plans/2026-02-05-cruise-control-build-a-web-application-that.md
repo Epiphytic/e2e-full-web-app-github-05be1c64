@@ -15,10 +15,12 @@
 The application is structured in layers:
 
 1. **JWT Infrastructure** - Local RSA key pair generation, JWT signing/verification, JWKS `.well-known` endpoint
-2. **Backend API** - Actix-web routes for table management (CREATE/DROP), schema modification (ALTER TABLE), and data operations (SELECT/INSERT/UPDATE/DELETE)
-3. **Frontend** - Askama HTML templates with htmx attributes for dynamic table/column/data editing without full page reloads
-4. **E2E Tests** - Playwright tests covering auth flow, table CRUD, and schema modification
-5. **CI/CD** - GitHub Actions for linting and dependency review on PRs
+2. **Core DB Setup** - SQLite connection pool (r2d2), WAL mode configuration, and database module structure
+3. **Table/Schema CRUD Operations** - Table management (CREATE/DROP), schema modification (ALTER TABLE ADD/DROP COLUMN), and data operations (SELECT/INSERT/UPDATE/DELETE)
+4. **Backend API** - Actix-web route handlers for auth, table management, and schema modification
+5. **Frontend** - Askama HTML templates with htmx attributes for dynamic table/column/data editing without full page reloads
+6. **E2E Tests** - Playwright tests covering auth flow, table CRUD, and schema modification
+7. **CI/CD** - GitHub Actions for linting and dependency review on PRs
 
 ### Directory Structure
 
