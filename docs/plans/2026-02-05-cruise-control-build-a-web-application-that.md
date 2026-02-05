@@ -1877,7 +1877,9 @@ git commit -m "ci: add dependency review workflow for PR checks"
 **Files:**
 - Create: `.github/workflows/e2e-tests.yml`
 
-**Step 1: Create E2E test workflow that pushes results**
+**Step 1: Create E2E test workflow that uploads results as artifacts**
+
+> **Note:** Test results are uploaded as GitHub Actions artifacts (not committed to the repository). Artifacts are accessible directly from the PR's "Checks" tab, providing validation without polluting the git history with generated files. This is the standard CI approach — committing test results to a branch would create noise in the repo and potential merge conflicts.
 
 `.github/workflows/e2e-tests.yml`:
 
@@ -1889,8 +1891,8 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 
 jobs:
   e2e:
@@ -2351,7 +2353,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
     {
       "id": "CRUISE-014",
       "subject": "GitHub Actions E2E test workflow",
-      "description": "Create .github/workflows/e2e-tests.yml that builds the Rust backend, installs Playwright, runs E2E tests, and uploads test results as artifacts. Runs on PRs to main.",
+      "description": "Create .github/workflows/e2e-tests.yml that builds the Rust backend, installs Playwright, runs E2E tests, and uploads test results as GitHub Actions artifacts (not committed to the repo). Artifacts are accessible from the PR Checks tab for validation. Runs on PRs to main.",
       "blocked_by": [],
       "complexity": "low",
       "acceptance_criteria": [
@@ -2359,8 +2361,9 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
         "Installs Rust, builds with cargo build --release",
         "Installs Node.js 20, npm ci, playwright install chromium",
         "Runs npx playwright test",
-        "Uploads playwright-report and test-results as artifacts",
-        "Artifacts retained for 30 days"
+        "Uploads playwright-report and test-results as GitHub Actions artifacts (not committed to the repo)",
+        "Artifacts retained for 30 days",
+        "Workflow permissions are read-only (contents: read, pull-requests: read) since no repo writes are needed"
       ],
       "permissions": ["Read", "Write", "Edit"],
       "cli_params": "claude --model haiku --allowedTools Read,Write,Edit --timeout 120",
