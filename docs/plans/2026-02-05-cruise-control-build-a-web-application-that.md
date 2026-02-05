@@ -1953,7 +1953,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "use_spawn_team": false,
       "cli_params": "claude --model haiku --allowedTools Read,Write,Edit --timeout 180",
       "permissions": ["Read", "Write", "Edit"],
-      "task_ids": ["CRUISE-005"]
+      "task_ids": ["CRUISE-005a", "CRUISE-005b"]
     },
     {
       "id": "SPAWN-005",
@@ -2075,17 +2075,31 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "spawn_instance": "SPAWN-003"
     },
     {
-      "id": "CRUISE-005",
-      "subject": "HTML templates with htmx",
-      "description": "Create Askama HTML templates: base layout (with htmx CDN include and CSS), login page, dashboard (table list with create/drop forms), table detail (column list with add/remove forms), and partial fragments for htmx swaps.",
+      "id": "CRUISE-005a",
+      "subject": "Base & Auth Templates",
+      "description": "Create Askama HTML templates for the base layout and authentication pages: base layout (with htmx CDN include and CSS) and login page with JWT token submission form.",
       "blocked_by": [],
-      "complexity": "medium",
+      "complexity": "low",
       "acceptance_criteria": [
         "base.html includes htmx script tag and basic CSS",
-        "login.html has a form with hx-post for JWT token submission",
-        "dashboard.html lists tables with hx-delete for dropping and a create form with hx-post",
-        "table_detail.html lists columns with hx-delete for removal and an add form with hx-post",
-        "Partial templates exist for table_row, column_form, and alert fragments",
+        "login.html extends base layout and has a form with hx-post for JWT token submission",
+        "Alert partial template exists for htmx swap feedback",
+        "All htmx attributes use correct hx-target and hx-swap values"
+      ],
+      "permissions": ["Read", "Write", "Edit"],
+      "cli_params": "claude --model haiku --allowedTools Read,Write,Edit --timeout 180",
+      "spawn_instance": "SPAWN-004"
+    },
+    {
+      "id": "CRUISE-005b",
+      "subject": "Dashboard & Table Detail Templates",
+      "description": "Create Askama HTML templates for the dashboard (table list with create/drop forms) and table detail (column list with add/remove forms) pages, along with partial fragments for htmx swaps.",
+      "blocked_by": ["CRUISE-005a"],
+      "complexity": "medium",
+      "acceptance_criteria": [
+        "dashboard.html extends base layout and lists tables with hx-delete for dropping and a create form with hx-post",
+        "table_detail.html extends base layout and lists columns with hx-delete for removal and an add form with hx-post",
+        "Partial templates exist for table_row and column_form fragments",
         "All htmx attributes use correct hx-target and hx-swap values"
       ],
       "permissions": ["Read", "Write", "Edit"],
@@ -2096,7 +2110,7 @@ git commit -m "feat: complete SQLite web editor with auth, htmx UI, and E2E test
       "id": "CRUISE-006",
       "subject": "API route handlers",
       "description": "Implement all actix-web route handlers: login page (GET /), login POST, logout, JWKS endpoint, dashboard (GET /dashboard), table detail (GET /tables/:name), create table (POST /api/tables), drop table (DELETE /api/tables/:name), add column (POST /api/tables/:name/columns), remove column (DELETE /api/tables/:name/columns/:col).",
-      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-004b", "CRUISE-005"],
+      "blocked_by": ["CRUISE-002", "CRUISE-003", "CRUISE-004b", "CRUISE-005a", "CRUISE-005b"],
       "complexity": "high",
       "acceptance_criteria": [
         "GET / renders login page",
